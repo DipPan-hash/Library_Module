@@ -2,21 +2,21 @@ package com.module.library.service;
 
 import java.util.List;
 
-import com.module.library.dto.AuthorsDTO;
-import com.module.library.dto.BooksDTO;
+import com.module.library.dto.AuthorDTO;
+import com.module.library.dto.BookDTO;
 
 public interface BookService {
 
-	List<BooksDTO> fetchAll();
+	List<BookDTO> fetchAll();
 
-	BooksDTO fetch(Long bookId);
+	BookDTO fetch(Long bookId);
 
-	void addBooks(List<BooksDTO> booksDTO);
+	void addBooks(List<BookDTO> booksDTO);
 
 	void updateBookName(Long bookId, String bookName);
 
 	void deleteBook(Long bookId);
 
-	void updateAuthors(Long bookId, List<AuthorsDTO> authors);
+	void updateAuthors(Long bookId, List<AuthorDTO> authors);
 
 }

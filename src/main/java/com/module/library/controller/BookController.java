@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.module.library.dto.AuthorsDTO;
-import com.module.library.dto.BooksDTO;
+import com.module.library.dto.AuthorDTO;
+import com.module.library.dto.BookDTO;
 import com.module.library.service.BookService;
 
 @RestController
@@ -27,19 +27,19 @@ public class BookController {
 
 	// list books sorted by name
 	@GetMapping("/users")
-	public ResponseEntity<List<BooksDTO>> fetchAll() {
+	public ResponseEntity<List<BookDTO>> fetchAll() {
 		return ResponseEntity.ok(bookService.fetchAll());
 	}
 
 	// list one book
 	@GetMapping("users/{bookId}")
-	public ResponseEntity<BooksDTO> fetch(@PathVariable Long bookId) {
+	public ResponseEntity<BookDTO> fetch(@PathVariable Long bookId) {
 		return ResponseEntity.ok(bookService.fetch(bookId));
 	}
 
 	// add new book(s)
 	@PostMapping("/users")
-	public ResponseEntity<HttpStatus> addBooks(@RequestBody List<BooksDTO> booksDTO) {
+	public ResponseEntity<HttpStatus> addBooks(@RequestBody List<BookDTO> booksDTO) {
 		bookService.addBooks(booksDTO);
 		return ResponseEntity.ok(HttpStatus.CREATED);
 	}
@@ -53,7 +53,7 @@ public class BookController {
 
 	// update book author’s list
 	@PostMapping("/admin")
-	public ResponseEntity<HttpStatus> updateAuthors(@RequestParam Long bookId, @RequestParam List<AuthorsDTO> authors) {
+	public ResponseEntity<HttpStatus> updateAuthors(@RequestParam Long bookId, @RequestParam List<AuthorDTO> authors) {
 		bookService.updateAuthors(bookId, authors);
 		return ResponseEntity.ok(HttpStatus.OK);
 	}

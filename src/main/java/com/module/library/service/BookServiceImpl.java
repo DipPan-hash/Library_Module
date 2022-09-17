@@ -7,10 +7,13 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.module.library.constants.ErrorCode;
+import com.module.library.constants.ErrorMessage;
 import com.module.library.dao.BookDao;
-import com.module.library.dto.AuthorsDTO;
-import com.module.library.dto.BooksDTO;
-import com.module.library.entities.Books;
+import com.module.library.dto.AuthorDTO;
+import com.module.library.dto.BookDTO;
+import com.module.library.entities.Book;
+import com.module.library.exception.RequestValidationError;
 import com.module.library.util.ApplicationUtil;
 
 @Service
@@ -22,46 +25,46 @@ public class BookServiceImpl implements BookService {
 	private Logger logger = Logger.getLogger(BookServiceImpl.class.getName());
 
 	@Override
-	public List<BooksDTO> fetchAll() {
+	public List<BookDTO> fetchAll() {
 		try {
-			List<Books> books = bookDao.fetchAll();
-			return ApplicationUtil.mapAll(books, BooksDTO.class);
+			List<Book> books = bookDao.fetchAll();
+			return ApplicationUtil.mapAll(books, BookDTO.class);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, () -> "Error fetching all the books :: " + e.getMessage());
-			throw e;
+			logger.log(Level.SEVERE, () -> ErrorMessage.FETCH_ALL_BOOKS_ERR + " :: " + e.getMessage());
+			throw new RequestValidationError(ErrorCode.REQUEST_VALIDATION_ERROR, ErrorMessage.FETCH_ALL_BOOKS_ERR);
 		}
 	}
 
 	@Override
-	public BooksDTO fetch(Long bookId) {
+	public BookDTO fetch(Long bookId) {
 		try {
-			Books book = bookDao.fetch(bookId);
-			return ApplicationUtil.map(book, BooksDTO.class);
+			Book book = bookDao.fetch(bookId);
+			return ApplicationUtil.map(book, BookDTO.class);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, () -> "Error fetching book by Id:: " + e.getMessage());
-			throw e;
+			logger.log(Level.SEVERE, () -> ErrorMessage.FETCH_BOOK_BY_ID_ERR + " :: " + e.getMessage());
+			throw new RequestValidationError(ErrorCode.REQUEST_VALIDATION_ERROR, ErrorMessage.FETCH_BOOK_BY_ID_ERR);
 		}
 	}
 
 	@Override
-	public void addBooks(List<BooksDTO> booksDTO) {
+	public void addBooks(List<BookDTO> booksDTO) {
 		try {
-			bookDao.addBooks(ApplicationUtil.mapAll(booksDTO, Books.class));
+			bookDao.addBooks(ApplicationUtil.mapAll(booksDTO, Book.class));
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, () -> "Error adding new books :: " + e.getMessage());
-			throw e;
+			logger.log(Level.SEVERE, () -> ErrorMessage.ADD_NEW_BOOK_ERR + " :: " + e.getMessage());
+			throw new RequestValidationError(ErrorCode.REQUEST_VALIDATION_ERROR, ErrorMessage.ADD_NEW_BOOK_ERR);
 		}
 	}
 
 	@Override
 	public void updateBookName(Long bookId, String bookName) {
 		try {
-			BooksDTO bookDTO = fetch(bookId);
+			BookDTO bookDTO = fetch(bookId);
 			bookDTO.setBookName(bookName);
-			bookDao.updateBookName(ApplicationUtil.map(bookDTO, Books.class));
+			bookDao.updateBookName(ApplicationUtil.map(bookDTO, Book.class));
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, () -> "Error updating book name :: " + e.getMessage());
-			throw e;
+			logger.log(Level.SEVERE, () -> ErrorMessage.UPDATE_BOOK_NAME_ERR + " :: " + e.getMessage());
+			throw new RequestValidationError(ErrorCode.REQUEST_VALIDATION_ERROR, ErrorMessage.UPDATE_BOOK_NAME_ERR);
 		}
 
 	}
@@ -71,21 +74,21 @@ public class BookServiceImpl implements BookService {
 		try {
 			bookDao.deleteBook(bookId);
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, () -> "Error deleting book :: " + e.getMessage());
-			throw e;
+			logger.log(Level.SEVERE, () -> ErrorMessage.DELETE_BOOK_ERR + " :: " + e.getMessage());
+			throw new RequestValidationError(ErrorCode.REQUEST_VALIDATION_ERROR, ErrorMessage.DELETE_BOOK_ERR);
 		}
 
 	}
 
 	@Override
-	public void updateAuthors(Long bookId, List<AuthorsDTO> authors) {
+	public void updateAuthors(Long bookId, List<AuthorDTO> authors) {
 		try {
-			BooksDTO bookDTO = fetch(bookId);
+			BookDTO bookDTO = fetch(bookId);
 			bookDTO.setAuthors(authors);
-			bookDao.updateAuthors(ApplicationUtil.map(bookDTO, Books.class));
+			bookDao.updateAuthors(ApplicationUtil.map(bookDTO, Book.class));
 		} catch (Exception e) {
-			logger.log(Level.SEVERE, () -> "Error updating authors  :: " + e.getMessage());
-			throw e;
+			logger.log(Level.SEVERE, () -> ErrorMessage.UPDATE_AUTHORS_ERR + " :: " + e.getMessage());
+			throw new RequestValidationError(ErrorCode.REQUEST_VALIDATION_ERROR, ErrorMessage.UPDATE_AUTHORS_ERR);
 		}
 
 	}

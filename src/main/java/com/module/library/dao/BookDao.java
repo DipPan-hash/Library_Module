@@ -2,19 +2,19 @@ package com.module.library.dao;
 
 import java.util.List;
 
-import com.module.library.entities.Books;
+import com.module.library.entities.Book;
 
 public interface BookDao {
 
-	List<Books> fetchAll();
+	List<Book> fetchAll();
 
-	Books fetch(Long bookId);
+	Book fetch(Long bookId);
 
-	void addBooks(List<Books> list);
+	void addBooks(List<Book> list);
 
-	void updateBookName(Books map);
+	void updateBookName(Book map);
 
 	void deleteBook(Long bookId);
 
-	void updateAuthors(Books map);
+	void updateAuthors(Book map);
 }
